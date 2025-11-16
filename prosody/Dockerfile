@@ -66,7 +66,7 @@ RUN set -x && \
     mkdir /prosody-plugins-contrib && \
     cp -a prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/*  /prosody-plugins-contrib && \
     rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz
-
+ADD https://raw.githubusercontent.com/jitsi/jitsi-meet/master/resources/prosody-plugins/mod_turncredentials.lua /prosody-plugins/mod_turncredentials.lua
 COPY rootfs/ /
 
 COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4

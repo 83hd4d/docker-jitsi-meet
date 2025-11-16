@@ -147,6 +147,10 @@ modules_enabled = {
 		"measure_stanza_counts";
 		{{ end -}}
 
+    {{- if or .Env.EXTERNAL_TURN_HOST .Env.EXTERNAL_TURNS_HOST }}
+    "turncredentials";
+    {{- end }}
+
 		{{ if .Env.GLOBAL_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES | compact) }}";
         {{ end }}

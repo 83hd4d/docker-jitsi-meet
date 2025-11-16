@@ -126,6 +126,12 @@ config.enableOpusRed = {{ $ENABLE_OPUS_RED }};
 config.disableAudioLevels = {{ $DISABLE_AUDIO_LEVELS }};
 config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 
+// TURN options.
+//
+
+{{- if or .Env.EXTERNAL_TURN_HOST .Env.EXTERNAL_TURNS_HOST }}
+config.useStunTurn= true;
+{{ end -}}
 
 // Peer-to-Peer options.
 //

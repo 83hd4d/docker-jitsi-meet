@@ -80,6 +80,30 @@ transcriber_prefixes = { "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN 
 
 http_default_host = "{{ $XMPP_DOMAIN }}"
 
+{{- if or .Env.EXTERNAL_TURN_HOST .Env.EXTERNAL_TURNS_HOST }}
+turncredentials_secret = "{{ .Env.EXTERNAL_TURN_SECRET | default "keepthissecret" }}";
+turncredentials_port = {{ .Env.EXTERNAL_TURN_CREDENTIALS_PORT | default "3478" }};
+turncredentials_ttl = 86400;
+turncredentials = {
+    {{- if .Env.EXTERNAL_TURN_HOST}}
+    {
+        type = "turn",
+        host = "{{ .Env.EXTERNAL_TURN_HOST }}",
+        port = {{ .Env.EXTERNAL_TURN_PORT | default "3478" }},
+        transport = "{{ .Env.EXTERNAL_TURN_TRANSPORT | default "tcp" }}"
+    }
+    {{- end }}
+    {{- if .Env.EXTERNAL_TURNS_HOST}}
+    {
+        type = "turns",
+        host = "{{ .Env.EXTERNAL_TURNS_HOST }}",
+        port = {{ .Env.EXTERNAL_TURNS_PORT | default "3478" }},
+        transport = "{{ .Env.EXTERNAL_TURNS_TRANSPORT | default "tcp" }}"
+    }
+    {{- end }}
+}
+{{ end }}
+
 {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS | compact) }}" }
 {{ end }}
